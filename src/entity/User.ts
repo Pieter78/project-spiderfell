@@ -1,5 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  JoinColumn,
+  OneToOne,
+} from 'typeorm'
 import { ObjectType, Field, Int } from 'type-graphql'
+import { Character } from './Character'
 
 @ObjectType()
 @Entity()
@@ -11,4 +19,12 @@ export class User extends BaseEntity {
   @Field()
   @Column()
   playerName: string
+
+  @Field(() => Character, { nullable: true })
+  @OneToOne(
+    () => Character,
+    character => character.user
+  )
+  @JoinColumn()
+  character: Character
 }

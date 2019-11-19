@@ -16,7 +16,7 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  User() {
+  async users() {
     return User.find()
   }
 }
