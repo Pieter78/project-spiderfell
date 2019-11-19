@@ -1,6 +1,7 @@
 import { Resolver, Mutation, Arg, InputType, Field, Query } from 'type-graphql'
 import { User } from '../entity/User'
 import { CharacterInput } from './CharacterResolver'
+import { Character } from '../entity/Character'
 
 @InputType()
 class UserInput {
@@ -15,7 +16,20 @@ class UserInput {
 export class UserResolver {
   @Mutation(() => User)
   async createUser(@Arg('options', () => UserInput) options: UserInput) {
+    console.log(JSON.stringify(options, null, 2))
+
     const user = await User.create(options).save()
+    let character
+    if (options.character) {
+      character = await Character.create(options.character).save()
+      user.character = character
+      character.user = user
+
+      // not updating, maybe use update
+      await user.save()
+      await character.save()
+    }
+
     return user
   }
 
