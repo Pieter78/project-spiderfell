@@ -10,7 +10,7 @@ import {
 import { Character } from '../entity/Character'
 
 @InputType()
-class CharacterInput {
+export class CharacterInput {
   @Field()
   name: string
 

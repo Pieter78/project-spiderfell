@@ -1,10 +1,14 @@
 import { Resolver, Mutation, Arg, InputType, Field, Query } from 'type-graphql'
 import { User } from '../entity/User'
+import { CharacterInput } from './CharacterResolver'
 
 @InputType()
 class UserInput {
   @Field()
   playerName: string
+
+  @Field({ nullable: true })
+  character: CharacterInput
 }
 
 @Resolver()
