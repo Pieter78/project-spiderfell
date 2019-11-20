@@ -10,9 +10,12 @@ import {
 import { Character } from '../entity/Character'
 
 @InputType()
-export class CharacterInput {
+class CharacterInput {
   @Field()
   name: string
+
+  @Field(() => Int, { nullable: true })
+  userId: number
 
   // @Field(() => Int)
   // str?: number;
@@ -63,11 +66,6 @@ export class CharacterResolver {
     return new Error('No character with that ID found')
   }
 
-  @Query(() => [Character])
-  characters() {
-    return Character.find()
-  }
-
   @Mutation(() => Character)
   async updateCharacter(
     @Arg('id') id: number,
@@ -78,5 +76,10 @@ export class CharacterResolver {
     return character
 
     return new Error('No character with that ID found')
+  }
+
+  @Query(() => [Character])
+  characters() {
+    return Character.find({ relations: ['user'] })
   }
 }

@@ -1,6 +1,13 @@
-import { Resolver, Mutation, Arg, InputType, Field, Query } from 'type-graphql'
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  InputType,
+  Field,
+  Query,
+  Int,
+} from 'type-graphql'
 import { User } from '../entity/User'
-import { CharacterInput } from './CharacterResolver'
 import { Character } from '../entity/Character'
 
 @InputType()
@@ -8,8 +15,8 @@ class UserInput {
   @Field()
   playerName: string
 
-  @Field({ nullable: true })
-  character: CharacterInput
+  @Field(() => Int, { nullable: true })
+  characterId: number
 }
 
 @Resolver()
@@ -19,15 +26,18 @@ export class UserResolver {
     console.log(JSON.stringify(options, null, 2))
 
     const user = await User.create(options).save()
-    let character
-    if (options.character) {
-      character = await Character.create(options.character).save()
-      user.character = character
-      character.user = user
 
-      // not updating, maybe use update
-      await user.save()
-      await character.save()
+    // Check if we have got passed a character to link to
+    const { characterId } = options
+    if (characterId) {
+      const character = await Character.findOne({ id: characterId })
+      if (character) {
+        user.character = character
+        character.user = user
+
+        await user.save()
+        await character.save()
+      }
     }
 
     return user

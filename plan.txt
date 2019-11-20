@@ -1,0 +1,31 @@
+in no particular order
+
+- Dice Roller package (tostring -> db, db -> parse from string)
+- Setup yarn workspaces for server/app
+- Frontend App
+- Character:
+  - Classes/Sub-classes
+  - Ability Scores
+  - Race
+  - Level
+  - Alignment
+  - Birthdate
+- Game (Entity):
+  - Date
+  - Initialize start
+- Title (Entity):
+  - Landed title -> OneToMany Provinces
+  - Rank (?) -> Duke, Prince, etc.
+  - Vassals (eventually)
+  - Diplomatic Relations
+- Province
+  - Population Level
+  - Source Level
+  - Relation (Angry, Happy)
+  - Tax Level
+  - Holdings -> OneToMany  
+- Holding
+  - Type
+  - Level
+  - Character
+- Assets
